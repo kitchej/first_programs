@@ -1,0 +1,1117 @@
+"""
+WRITTEN BY JOSHUA KITCHEN - Summer 2019
+I wrote this program for practice and personal use. It generates dummy data by using the random module in conjunction
+with the databases listed in the import statements, then writes the data to a text file.
+
+ -----------------------------------------------------------------------------------------------------------
+
+CATEGORIES AVAILABLE(version 1.1):
+- DATES
+    - Full dates in the following formats: month day, year; mm/dd/yyyy; day month year; dd/mm/yyyy
+    - Months
+    - Years
+- NUMBERS
+    - Integers
+    - Floating point values
+- NAMES
+    - Only male first names
+    - Only female first names
+    - Only surnames
+    - Mixed gender first names
+    - Full male names
+    - Full female names
+    - Full mixed gender names
+- DICE ROLLS (Up to six die)
+- COIN TOSSES
+- RANDOM STUDENTS
+    - Creates a list of random students with:
+        - A name (male, female, or mixed gender)
+        - A GPA (optional)
+        - A major (optional)
+        - A class(freshman, sophomore, junior, senior; optional)
+- RANDOM EMPLOYEES
+    - Creates a list of random employeess with:
+        - A name (male, female, or mixed gender)
+        - A salary (optional)
+        - A position (optional)
+        - Years worked (optional)
+"""
+import random
+from datetime import datetime
+from Date_data import months, months_to_num
+from Names import names_males, names_females, surnames
+from Student_data import majors, classes
+from Employee_data import positions, salaries
+
+
+def show_categories():
+    print("\ndates\nnames\nnumbers\ndice rolls\ncoin tosses\nrandom students\nrandom employees")
+
+
+def random_dates():
+    while True:
+        command = input("\nIN DATES. To choose another category, type \"back\"\nOptions: full date, months, years\n"
+                        "Enter option:")
+        if command == "full date":
+            while True:
+                path = input("Enter file path to write data to. The only file extension supported in this version is "
+                             ".txt: ")
+                if ".txt" in path:
+                    break
+                else:
+                    print("\nFILE NAME DOES NOT HAVE A FILE EXTENSION")
+            quantity = input("Number of random dates: ")
+            form = input("Choose date format \na: month day, year; b:  mm/dd/yyyy; c: day month year d: dd/mm/yyyy: ")
+            print("Specify the range of years. For dates in the same year, make the range start and end the same")
+            x = input("Range start: ")
+            y = input("Range end: ")
+            try:
+                if form == "a":
+                    dates = []
+                    for i in range(int(quantity)):
+                        month = random.choice(months)
+                        year = random.randint(int(x), int(y))
+                        if month == ("January", "March", "May", "July", "August", "October", "December"):
+                            day = random.randint(1, 31)
+                        elif month == "February":
+                            if (year % 400 == 0) or (year % 4 == 0) and (year % 100 != 0):
+                                day = random.randint(1, 29)
+                            else:
+                                day = random.randint(1, 28)
+                        else:
+                            day = random.randint(1, 30)
+                        date = (month + " " + str(day) + ", " + str(year))
+                        dates.append(date)
+                    dates.sort(key=lambda date_sort: datetime.strptime(date_sort, '%B %d, %Y'))
+                    for i in range(int(quantity)):
+                        with open(path, "a+") as file:
+                            file.write(dates[i] + "\n")
+                elif form == "b":
+                    dates = []
+                    for i in range(int(quantity)):
+                        month = random.choice(months)
+                        numerical_month = months_to_num[month]
+                        year = random.randint(int(x), int(y))
+                        if month == ("January", "March", "May", "July", "August", "October", "December"):
+                            day = random.randint(1, 31)
+                        elif month == "February":
+                            if (year % 400 == 0) or (year % 4 == 0) and (year % 100 != 0):
+                                day = random.randint(1, 29)
+                            else:
+                                day = random.randint(1, 28)
+                        else:
+                            day = random.randint(1, 30)
+                        date = (str(numerical_month) + "/" + str(day) + "/" + str(year))
+                        dates.append(date)
+                    dates.sort(key=lambda date_sort: datetime.strptime(date_sort, '%m/%d/%Y'))
+                    for i in range(int(quantity)):
+                        with open(path, "a+") as file:
+                            file.write(dates[i] + "\n")
+                elif form == "c":
+                    dates = []
+                    for i in range(int(quantity)):
+                        month = random.choice(months)
+                        year = random.randint(int(x), int(y))
+                        if month == ("January", "March", "May", "July", "August", "October", "December"):
+                            day = random.randint(1, 31)
+                        elif month == "February":
+                            if (year % 400 == 0) or (year % 4 == 0) and (year % 100 != 0):
+                                day = random.randint(1, 29)
+                            else:
+                                day = random.randint(1, 28)
+                        else:
+                            day = random.randint(1, 30)
+                        date = (str(day) + " " + month + " " + str(year))
+                        dates.append(date)
+                    dates.sort(key=lambda date_sort: datetime.strptime(date_sort, '%d %B %Y'))
+                    for i in range(int(quantity)):
+                        with open(path, "a+") as file:
+                            file.write(dates[i] + "\n")
+                elif form == "d":
+                    dates = []
+                    for i in range(int(quantity)):
+                        month = random.choice(months)
+                        numerical_month = months_to_num[month]
+                        year = random.randint(int(x), int(y))
+                        if month == ("January", "March", "May", "July", "August", "October", "December"):
+                            day = random.randint(1, 31)
+                        elif month == "February":
+                            if (year % 400 == 0) or (year % 4 == 0) and (year % 100 != 0):
+                                day = random.randint(1, 29)
+                            else:
+                                day = random.randint(1, 28)
+                        else:
+                            day = random.randint(1, 30)
+                        date = (str(day) + "/" + str(numerical_month) + "/" + str(year))
+                        dates.append(date)
+                    dates.sort(key=lambda date_sort: datetime.strptime(date_sort, '%d/%m/%Y'))
+                    for i in range(int(quantity)):
+                        with open(path, "a+") as file:
+                            file.write(dates[i] + "\n")
+                else:
+                    print("\"" + form + "\" IS NOT A VALID INPUT")
+                    break
+            except PermissionError:
+                print("CANNOT ACCESS FILE")
+                break
+            except FileNotFoundError:
+                print("FILE PATH NOT FOUND")
+                break
+            except OSError:
+                print("CANNOT SAVE FILE")
+                break
+            except ValueError:
+                print("INVALID INPUT FOR QUANTITY OR RANGE. Note: \"range start\" must be less than \"range end.\"")
+            print("DONE\n")
+        elif command == "months":
+            while True:
+                path = input("Enter file path to write data to. The only file extension supported in this version is "
+                             ".txt: ")
+                if ".txt" in path:
+                    break
+                else:
+                    print("\nFILE NAME DOES NOT HAVE A FILE EXTENSION")
+            quantity = input("Quantity of months: ")
+            rand_month = []
+            try:
+                for i in range(int(quantity)):
+                    rand_month.append(random.choice(months))
+                rand_month.sort()
+                for i in range(int(quantity)):
+                    with open(path, "a+") as file:
+                        file.write(rand_month[i] + "\n")
+                print("DONE\n")
+            except PermissionError:
+                print("CANNOT ACCESS FILE")
+            except FileNotFoundError:
+                print("FILE PATH NOT FOUND")
+            except OSError:
+                print("CANNOT SAVE FILE")
+            except ValueError:
+                print("INVALID INPUT FOR QUANTITY")
+        elif command == "years":
+            while True:
+                path = input("Enter file path to write data to. The only file extension supported in this version is "
+                             ".txt: ")
+                if ".txt" in path:
+                    break
+                else:
+                    print("\nFILE NAME DOES NOT HAVE A FILE EXTENSION")
+            quantity = input("Quantity of years: ")
+            x = input("Range start: ")
+            y = input("Range end: ")
+            try:
+                rand_year = []
+                for i in range(int(quantity)):
+                    rand_year.append(random.randint(int(x), int(y)))
+                rand_year.sort()
+                for i in range(int(quantity)):
+                    with open(path, "a+") as file:
+                        file.write(str(rand_year[i]) + "\n")
+                print("DONE\n")
+            except PermissionError:
+                print("CANNOT ACCESS FILE")
+            except FileNotFoundError:
+                print("FILE PATH NOT FOUND")
+            except OSError:
+                print("CANNOT SAVE FILE")
+            except ValueError:
+                print("INVALID INPUT FOR QUANTITY OR RANGE. Note: \"range start\" must be less than \"range end.\"")
+        elif command == "back":
+            break
+        else:
+            print("\"" + command + "\" IS NOT A VALID INPUT")
+
+
+def random_numbers():
+    while True:
+        command = input("\nIN RANDOM NUMBERS. To go back, type \"back\"\nFor whole numbers only, type \"integers\", "
+                        "otherwise press enter to continue: ")
+        if command == "integers":
+            while True:
+                path = input("Enter file path to write data to. The only file extension supported in this version is "
+                             ".txt: ")
+                if ".txt" in path:
+                    break
+                else:
+                    print("\nFILE NAME DOES NOT HAVE A FILE EXTENSION")
+            quantity = input("Quantity of numbers desired: ")
+            x = input("Range start: ")
+            y = input("Range end: ")
+            try:
+                for numbers in range(int(quantity)):
+                    num = random.randint(int(x), int(y))
+                    with open(path, "a+") as file:
+                        file.write(str(num) + "\n")
+                print("DONE\n")
+            except PermissionError:
+                print("CANNOT ACCESS FILE")
+            except FileNotFoundError:
+                print("FILE PATH NOT FOUND")
+            except OSError:
+                print("CANNOT SAVE FILE")
+            except ValueError:
+                print("INVALID INPUT FOR QUANTITY OR RANGE. Note: \"range start\" must be less than \"range end.\"")
+        elif command == "":
+            while True:
+                path = input("Enter file path to write data to. The only file extension supported in this version is "
+                             ".txt: ")
+                if ".txt" in path:
+                    break
+                else:
+                    print("\nFILE NAME DOES NOT HAVE A FILE EXTENSION")
+            quantity = input("Quantity of numbers desired: ")
+            x = input("Range start: ")
+            y = input("Range end: ")
+            try:
+                for numbers in range(int(quantity)):
+                    num = random.uniform(int(x), int(y))
+                    with open(path, "a+") as file:
+                        file.write(str(num) + "\n")
+                print("DONE\n")
+            except PermissionError:
+                print("CANNOT ACCESS FILE")
+            except FileNotFoundError:
+                print("FILE PATH NOT FOUND")
+            except OSError:
+                print("CANNOT SAVE FILE")
+            except ValueError:
+                print("INVALID INPUT FOR QUANTITY OR RANGE. Note: \"range start\" must be less than \"range end.\"")
+        elif command == "back":
+            break
+        else:
+            print("\"" + command + "\" IS NOT A VALID INPUT")
+
+
+def random_names():
+    while True:
+        command = input("\nIN NAMES. To go back, type \"back\"\nCategories: names male, names female, mixed, surnames, "
+                        "full names male, full names female, full names mixed\nEnter category: ")
+        if command == "names male":
+            while True:
+                path = input("Enter file path to write data to. The only file extension supported in this version is "
+                             ".txt: ")
+                if ".txt" in path:
+                    break
+                else:
+                    print("\nFILE NAME DOES NOT HAVE A FILE EXTENSION")
+            while True:
+                quantity = input("Quantity of names(999 max): ")
+                try:
+                    if int(quantity) <= 999:
+                        break
+                    else:
+                        print("\nQUANTITY IS TOO LARGE")
+                except ValueError:
+                    print("\nINVALID INPUT FOR QUANTITY")
+            rand_name_males = random.sample(names_males, k=int(quantity))
+            rand_name_males.sort()
+            try:
+                for i in range(int(quantity)):
+                    with open(path, "a+") as file:
+                        file.write(rand_name_males[i] + "\n")
+                print("DONE\n")
+            except PermissionError:
+                print("CANNOT ACCESS FILE")
+            except FileNotFoundError:
+                print("FILE PATH NOT FOUND")
+            except OSError:
+                print("CANNOT SAVE FILE")
+            except ValueError:
+                print("INVALID INPUT FOR QUANTITY")
+        elif command == "names female":
+            try:
+                while True:
+                    path = input(
+                        "Enter file path to write data to. The only file extension supported in this version is "
+                        ".txt: ")
+                    if ".txt" in path:
+                        break
+                    else:
+                        print("\nFILE NAME DOES NOT HAVE A FILE EXTENSION")
+                while True:
+                    quantity = input("Quantity of names: ")
+                    try:
+                        if int(quantity) <= 999:
+                            break
+                        else:
+                            print("\nQUANTITY IS TOO LARGE")
+                    except ValueError:
+                        print("\nINVALID INPUT FOR QUANTITY")
+                rand_name_females = random.sample(names_females, k=int(quantity))
+                rand_name_females.sort()
+                for i in range(int(quantity)):
+                    with open(path, "a+") as file:
+                        file.write(rand_name_females[i] + "\n")
+                print("DONE\n")
+            except PermissionError:
+                print("CANNOT ACCESS FILE")
+            except FileNotFoundError:
+                print("FILE PATH NOT FOUND")
+            except OSError:
+                print("CANNOT SAVE FILE")
+            except ValueError:
+                print("INVALID INPUT FOR QUANTITY")
+        elif command == "mixed":
+            while True:
+                path = input("Enter file path to write data to. The only file extension supported in this version is "
+                             ".txt: ")
+                if ".txt" in path:
+                    break
+                else:
+                    print("\nFILE NAME DOES NOT HAVE A FILE EXTENSION")
+            while True:
+                quantity = input("Quantity of names: ")
+                try:
+                    if int(quantity) <= 999:
+                        break
+                    else:
+                        print("\nQUANTITY IS TOO LARGE")
+                except ValueError:
+                    print("\nINVALID INPUT FOR QUANTITY")
+            rand_name_females = random.sample(names_females, k=int(quantity))
+            rand_name_males = random.sample(names_males, k=int(quantity))
+            try:
+                mixed_names = []
+                for i in range(int(quantity)):
+                    z = random.randint(0, 1)
+                    if z == 0:
+                        mixed_names.append(rand_name_females[i])
+                    else:
+                        mixed_names.append(rand_name_males[i])
+                mixed_names.sort()
+                for i in range(int(quantity)):
+                    with open(path, "a+") as file:
+                        file.write(mixed_names[i] + "\n")
+                print("DONE\n")
+            except PermissionError:
+                print("CANNOT ACCESS FILE")
+            except FileNotFoundError:
+                print("FILE PATH NOT FOUND")
+            except OSError:
+                print("CANNOT SAVE FILE")
+            except ValueError:
+                print("INVALID INPUT FOR QUANTITY")
+        elif command == "surnames":
+            while True:
+                path = input("Enter file path to write data to. The only file extension supported in this version is "
+                             ".txt: ")
+                if ".txt" in path:
+                    break
+                else:
+                    print("\nFILE NAME DOES NOT HAVE A FILE EXTENSION")
+            while True:
+                quantity = input("Quantity of names: ")
+                try:
+                    if int(quantity) <= 999:
+                        break
+                    else:
+                        print("\nQUANTITY IS TOO LARGE")
+                except ValueError:
+                    print("\nINVALID INPUT FOR QUANTITY")
+            rand_name_surname = random.sample(surnames, k=int(quantity))
+            rand_name_surname.sort()
+            try:
+                for i in range(int(quantity)):
+                    with open(path, "a+") as file:
+                        file.write(rand_name_surname[i] + "\n")
+                print("DONE\n")
+            except PermissionError:
+                print("CANNOT ACCESS FILE")
+            except FileNotFoundError:
+                print("FILE PATH NOT FOUND")
+            except OSError:
+                print("CANNOT SAVE FILE")
+            except ValueError:
+                print("INVALID INPUT FOR QUANTITY")
+        elif command == "full names male":
+            while True:
+                path = input("Enter file path to write data to. The only file extension supported in this version is "
+                             ".txt: ")
+                if ".txt" in path:
+                    break
+                else:
+                    print("\nFILE NAME DOES NOT HAVE A FILE EXTENSION")
+            while True:
+                quantity = input("Quantity of names: ")
+                try:
+                    if int(quantity) <= 999:
+                        break
+                    else:
+                        print("\nQUANTITY IS TOO LARGE")
+                except ValueError:
+                    print("\nINVALID INPUT FOR QUANTITY")
+            rand_names_first = random.sample(names_males, k=int(quantity))
+            rand_names_last = random.sample(surnames, k=int(quantity))
+            rand_names_last.sort()
+            try:
+                for i in range(int(quantity)):
+                    with open(path, "a+") as file:
+                        file.write(rand_names_first[i] + " " + rand_names_last[i] + "\n")
+                print("DONE\n")
+            except PermissionError:
+                print("CANNOT ACCESS FILE")
+            except FileNotFoundError:
+                print("FILE PATH NOT FOUND")
+            except OSError:
+                print("CANNOT SAVE FILE")
+            except ValueError:
+                print("INVALID INPUT FOR QUANTITY")
+        elif command == "full names female":
+            while True:
+                path = input(
+                    "Enter file path to write data to. The only file extension supported in this version is "
+                    ".txt: ")
+                if ".txt" in path:
+                    break
+                else:
+                    print("\nFILE NAME DOES NOT HAVE A FILE EXTENSION")
+            while True:
+                quantity = input("Quantity of names: ")
+                try:
+                    if int(quantity) <= 999:
+                        break
+                    else:
+                        print("\nQUANTITY IS TOO LARGE")
+                except ValueError:
+                    print("\nINVALID INPUT FOR QUANTITY")
+            rand_names_first = random.sample(names_females, k=int(quantity))
+            rand_names_last = random.sample(surnames, k=int(quantity))
+            rand_names_last.sort()
+            try:
+                for i in range(int(quantity)):
+                    with open(path, "a+") as file:
+                        file.write(rand_names_first[i] + " " + rand_names_last[i] + "\n")
+                print("DONE\n")
+            except PermissionError:
+                print("CANNOT ACCESS FILE")
+            except ValueError:
+                print("INVALID INPUT")
+            except FileNotFoundError:
+                print("FILE PATH NOT FOUND")
+            except OSError:
+                print("CANNOT SAVE FILE")
+        elif command == "full names mixed":
+            while True:
+                path = input("Enter file path to write data to. The only file extension supported in this version is "
+                             ".txt: ")
+                if ".txt" in path:
+                    break
+                else:
+                    print("\nFILE NAME DOES NOT HAVE A FILE EXTENSION")
+            while True:
+                quantity = input("Quantity of names: ")
+                try:
+                    if int(quantity) <= 999:
+                        break
+                    else:
+                        print("\nQUANTITY IS TOO LARGE")
+                except ValueError:
+                    print("\nINVALID INPUT FOR QUANTITY")
+            rand_names_first_f = random.sample(names_females, k=int(quantity))
+            rand_names_first_m = random.sample(names_males, k=int(quantity))
+            rand_names_last = random.sample(surnames, k=int(quantity))
+            rand_names_last.sort()
+            try:
+                for i in range(int(quantity)):
+                    z = random.randint(0, 1)
+                    if z == 0:
+                        first = rand_names_first_f[i]
+                    else:
+                        first = rand_names_first_m[i]
+                    with open(path, "a+") as file:
+                        file.write(first + " " + rand_names_last[i] + "\n")
+                print("DONE\n")
+            except PermissionError:
+                print("CANNOT ACCESS FILE")
+            except FileNotFoundError:
+                print("FILE PATH NOT FOUND")
+            except OSError:
+                print("CANNOT SAVE FILE")
+            except ValueError:
+                print("INVALID INPUT FOR QUANTITY")
+        elif command == "back":
+            break
+        else:
+            print("\"" + command + "\" IS NOT A VALID INPUT")
+
+
+def dice_rolls():
+    while True:
+        command = input("\nIN DICE ROLLS. To go back, type \"back\"\nInput number of die (1-6): ")
+        if command == "1":
+            rolls = input("Quantity of rolls: ")
+            while True:
+                path = input("Enter file path to write data to. The only file extension supported in this version is "
+                             ".txt: ")
+                if ".txt" in path:
+                    break
+                else:
+                    print("\nFILE NAME DOES NOT HAVE A FILE EXTENSION")
+            try:
+                for i in range(int(rolls)):
+                    die1 = random.randint(1, 6)
+                    with open(path, "a+") as file:
+                        file.write(str(die1) + "\n")
+                print("DONE\n")
+            except PermissionError:
+                print("CANNOT ACCESS FILE")
+            except FileNotFoundError:
+                print("FILE PATH NOT FOUND")
+            except OSError:
+                print("CANNOT SAVE FILE")
+            except ValueError:
+                print("INVALID INPUT FOR QUANTITY")
+        elif command == "2":
+            rolls = input("Quantity of rolls: ")
+            while True:
+                path = input("Enter file path to write data to. The only file extension supported in this version is "
+                             ".txt: ")
+                if ".txt" in path:
+                    break
+                else:
+                    print("\nFILE NAME DOES NOT HAVE A FILE EXTENSION")
+            try:
+                for i in range(int(rolls)):
+                    die1 = random.randint(1, 6)
+                    die2 = random.randint(1, 6)
+                    with open(path, "a+") as file:
+                        file.write("Set " + str(i) + ": " + str(die1) + ", " + str(die2) + "\n")
+                print("DONE\n")
+            except PermissionError:
+                print("CANNOT ACCESS FILE")
+            except FileNotFoundError:
+                print("FILE PATH NOT FOUND")
+            except OSError:
+                print("CANNOT SAVE FILE")
+            except ValueError:
+                print("INVALID INPUT FOR QUANTITY")
+        elif command == "3":
+            rolls = input("Quantity of rolls: ")
+            while True:
+                path = input("Enter file path to write data to. The only file extension supported in this version is "
+                             ".txt: ")
+                if ".txt" in path:
+                    break
+                else:
+                    print("\nFILE NAME DOES NOT HAVE A FILE EXTENSION")
+            try:
+                for i in range(int(rolls)):
+                    die1 = random.randint(1, 6)
+                    die2 = random.randint(1, 6)
+                    die3 = random.randint(1, 6)
+                    with open(path, "a+") as file:
+                        file.write("Set " + str(i) + ": " + str(die1) + ", " + str(die2) + ", " + str(die3) + "\n")
+                print("DONE\n")
+            except PermissionError:
+                print("CANNOT ACCESS FILE")
+            except FileNotFoundError:
+                print("FILE PATH NOT FOUND")
+            except OSError:
+                print("CANNOT SAVE FILE")
+            except ValueError:
+                print("INVALID INPUT FOR QUANTITY")
+        elif command == "4":
+            rolls = input("Quantity of rolls: ")
+            while True:
+                path = input("Enter file path to write data to. The only file extension supported in this version is "
+                             ".txt: ")
+                if ".txt" in path:
+                    break
+                else:
+                    print("\nFILE NAME DOES NOT HAVE A FILE EXTENSION")
+            try:
+                for i in range(int(rolls)):
+                    die1 = random.randint(1, 6)
+                    die2 = random.randint(1, 6)
+                    die3 = random.randint(1, 6)
+                    die4 = random.randint(1, 6)
+                    with open(path, "a+") as file:
+                        file.write("Set " + str(i) + ": " + str(die1) + ", " + str(die2) + ", " + str(die3) + ", "
+                                   + str(die4) + "\n")
+                print("DONE\n")
+            except PermissionError:
+                print("CANNOT ACCESS FILE")
+            except FileNotFoundError:
+                print("FILE PATH NOT FOUND")
+            except OSError:
+                print("CANNOT SAVE FILE")
+            except ValueError:
+                print("INVALID INPUT FOR QUANTITY")
+        elif command == "5":
+            rolls = input("Quantity of rolls: ")
+            while True:
+                path = input("Enter file path to write data to. The only file extension supported in this version is "
+                             ".txt: ")
+                if ".txt" in path:
+                    break
+                else:
+                    print("\nFILE NAME DOES NOT HAVE A FILE EXTENSION")
+            try:
+                for i in range(int(rolls)):
+                    die1 = random.randint(1, 6)
+                    die2 = random.randint(1, 6)
+                    die3 = random.randint(1, 6)
+                    die4 = random.randint(1, 6)
+                    die5 = random.randint(1, 6)
+                    with open(path, "a+") as file:
+                        file.write("Set " + str(i) + ": " + str(die1) + ", " + str(die2) + ", " + str(die3) + ", "
+                                   + str(die4) + ", " + str(die5) + "\n")
+                print("DONE\n")
+            except PermissionError:
+                print("CANNOT ACCESS FILE")
+            except FileNotFoundError:
+                print("FILE PATH NOT FOUND")
+            except OSError:
+                print("CANNOT SAVE FILE")
+            except ValueError:
+                print("INVALID INPUT FOR QUANTITY")
+        elif command == "6":
+            rolls = input("Quantity of rolls: ")
+            while True:
+                path = input("Enter file path to write data to. The only file extension supported in this version is "
+                             ".txt: ")
+                if ".txt" in path:
+                    break
+                else:
+                    print("\nFILE NAME DOES NOT HAVE A FILE EXTENSION")
+            try:
+                for i in range(int(rolls)):
+                    die1 = random.randint(1, 6)
+                    die2 = random.randint(1, 6)
+                    die3 = random.randint(1, 6)
+                    die4 = random.randint(1, 6)
+                    die5 = random.randint(1, 6)
+                    die6 = random.randint(1, 6)
+                    with open(path, "a+") as file:
+                        file.write("Set " + str(i) + ": " + str(die1) + ", " + str(die2) + ", " + str(die3) + ", "
+                                   + str(die4) + ", " + str(die5) + ", " + str(die6) + "\n")
+                print("DONE\n")
+            except PermissionError:
+                print("CANNOT ACCESS FILE")
+            except FileNotFoundError:
+                print("FILE PATH NOT FOUND")
+            except OSError:
+                print("CANNOT SAVE FILE")
+            except ValueError:
+                print("INVALID INPUT FOR QUANTITY")
+        elif command == "back":
+            break
+        else:
+            print("\"" + command + "\" IS NOT A VALID INPUT")
+
+
+def coin_tosses():
+    while True:
+        command = input("\nIN COIN TOSSES. To go back, type \"back\" Press ENTER to start")
+        if command == "back":
+            break
+        elif command == "":
+            tosses = input("Enter number of tosses: ")
+            while True:
+                path = input("Enter file path to write data to. The only file extension supported in this version is "
+                             ".txt: ")
+                if ".txt" in path:
+                    break
+                else:
+                    print("\nFILE NAME DOES NOT HAVE A FILE EXTENSION")
+            try:
+                for i in range(int(tosses)):
+                    toss = random.randint(0, 1)
+                    with open(path, "a+") as file:
+                        if toss == 0:
+                            file.write("Heads\n")
+                        else:
+                            file.write("Tails\n")
+                print("DONE\n")
+            except PermissionError:
+                print("CANNOT ACCESS FILE")
+            except FileNotFoundError:
+                print("FILE PATH NOT FOUND")
+            except OSError:
+                print("CANNOT SAVE FILE")
+            except ValueError:
+                print("INVALID INPUT FOR QUANTITY")
+        else:
+            print("\"" + command + "\" IS NOT A VALID INPUT")
+
+
+def random_students():
+    while True:
+        student_names = []
+        student_gpa = []
+        student_majors = []
+        student_class = []
+        command = input("\nIN RANDOM STUDENT. To choose another category, type \"back\"\nPress enter to start")
+        if command == "back":
+            break
+        elif command == "":
+            while True:
+                quantity = input("First, enter quantity of students(999 MAX): ")
+                try:
+                    if int(quantity) <= 999:
+                        break
+                    else:
+                        print("\nQUANTITY IS TOO LARGE")
+                except ValueError:
+                    print("\nINVALID INPUT FOR QUANTITY")
+            name_type = input("Next, enter the type of names for your students\nOptions: a. Male names only, "
+                              "b. Female names only c. Mixed: ")
+            if name_type == "a":
+                rand_names_first_m = random.sample(names_males, k=int(quantity))
+                rand_names_last = random.sample(surnames, k=int(quantity))
+                rand_names_last.sort()
+                for i in range(int(quantity)):
+                    student_names.append(rand_names_first_m[i] + " " + rand_names_last[i])
+            elif name_type == "b":
+                rand_names_first_f = random.sample(names_females, k=int(quantity))
+                rand_names_last = random.sample(surnames, k=int(quantity))
+                rand_names_last.sort()
+                for i in range(int(quantity)):
+                    student_names.append(rand_names_first_f[i] + " " + rand_names_last[i])
+            elif name_type == "c":
+                rand_names_first_f = random.sample(names_females, k=int(quantity))
+                rand_names_first_m = random.sample(names_males, k=int(quantity))
+                rand_names_last = random.sample(surnames, k=int(quantity))
+                rand_names_last.sort()
+                for i in range(int(quantity)):
+                    z = random.randint(0, 1)
+                    if z == 0:
+                        first = rand_names_first_f[i]
+                    else:
+                        first = rand_names_first_m[i]
+                    last = rand_names_last[i]
+                    student_names.append(first + " " + last)
+            else:
+                print("\"" + name_type + "\" IS AN INVALID INPUT")
+            print("Now select some options")
+            option_1 = input("Will the student have a GPA? y/n: ")
+            try:
+                if option_1 == "y":
+                    for i in range(int(quantity)):
+                        student_gpa.append(round(random.uniform(2.0, 4.0), 2))
+                elif option_1 == "n":
+                    pass
+                else:
+                    print("\"" + option_1 + "\" IS NOT A VALID INPUT")
+                option_2 = input("Will student have a major? y/n: ")
+                if option_2 == "y":
+                    for i in range(int(quantity)):
+                        student_majors.append(random.choice(majors))
+                elif option_2 == "n":
+                    pass
+                else:
+                    print("\"" + option_2 + "\" IS NOT A VALID INPUT")
+                option3 = input("Will student have a class? y/n: ")
+                if option3 == "y":
+                    for i in range(int(quantity)):
+                        student_class.append(random.choice(classes))
+                elif option3 == "n":
+                    pass
+                else:
+                    print("\"" + option3 + "\" IS NOT A VALID INPUT")
+            except ValueError:
+                print("INVALID INPUT")
+            while True:
+                path = input("Enter file path to write data to. The only file extension supported in this version is "
+                             ".txt: ")
+                if ".txt" in path:
+                    break
+                else:
+                    print("\nFILE NAME DOES NOT HAVE A FILE EXTENSION")
+            for i in range(int(quantity)):
+                if student_names:
+                    try:
+                        with open(path, "a+") as file:
+                            file.write(student_names[i] + ", ")
+                    except PermissionError:
+                        print("CANNOT ACCESS FILE")
+                        break
+                    except ValueError:
+                        print("INVALID INPUT")
+                        break
+                    except FileNotFoundError:
+                        print("FILE PATH NOT FOUND")
+                        break
+                    except OSError:
+                        print("CANNOT SAVE FILE")
+                        break
+                else:
+                    pass
+                if student_gpa:
+                    try:
+                        with open(path, "a+") as file:
+                            file.write("GPA: " + str(student_gpa[i]) + ", ")
+                    except PermissionError:
+                        print("CANNOT ACCESS FILE")
+                        break
+                    except ValueError:
+                        print("INVALID INPUT")
+                        break
+                    except FileNotFoundError:
+                        print("FILE PATH NOT FOUND")
+                        break
+                    except OSError:
+                        print("CANNOT SAVE FILE")
+                        break
+                else:
+                    pass
+                if student_majors:
+                    try:
+                        with open(path, "a+") as file:
+                            file.write("Major: " + student_majors[i] + ", ")
+                    except PermissionError:
+                        print("CANNOT ACCESS FILE")
+                        break
+                    except ValueError:
+                        print("INVALID INPUT")
+                        break
+                    except FileNotFoundError:
+                        print("FILE PATH NOT FOUND")
+                        break
+                    except OSError:
+                        print("CANNOT SAVE FILE")
+                        break
+                else:
+                    pass
+                if student_class:
+                    try:
+                        with open(path, "a+") as file:
+                            file.write("Class: " + student_class[i] + ", ")
+                    except PermissionError:
+                        print("CANNOT ACCESS FILE")
+                        break
+                    except ValueError:
+                        print("INVALID INPUT")
+                        break
+                    except FileNotFoundError:
+                        print("FILE PATH NOT FOUND")
+                        break
+                    except OSError:
+                        print("CANNOT SAVE FILE")
+                        break
+                else:
+                    pass
+                try:
+                    with open(path, "a+") as file:
+                        file.write("\n")
+                except PermissionError:
+                    print("CANNOT ACCESS FILE")
+                    break
+                except ValueError:
+                    print("INVALID INPUT")
+                    break
+                except FileNotFoundError:
+                    print("FILE PATH NOT FOUND")
+                    break
+                except OSError:
+                    print("CANNOT SAVE FILE")
+                    break
+            print("DONE\n")
+        else:
+            print("\"" + command + "\" IS NOT A VALID INPUT")
+
+
+def random_employees():
+    while True:
+        employee_names = []
+        employee_salary = []
+        employee_position = []
+        employee_years_worked = []
+        command = input("\nIN RANDOM EMPLOYEE. To choose another category, type \"back\"\nPress enter to start")
+        if command == "back":
+            break
+        elif command == "":
+            while True:
+                quantity = input("First, enter quantity of employees(999 MAX): ")
+                try:
+                    if int(quantity) <= 999:
+                        break
+                    else:
+                        print("\nQUANTITY IS TOO LARGE")
+                except ValueError:
+                    print("\nINVALID INPUT FOR QUANTITY")
+            name_type = input("Next, enter the type of names for your employees\nOptions: a. Male names only, "
+                              "b. Female names only c. Mixed: ")
+            if name_type == "a":
+                rand_names_first_m = random.sample(names_males, k=int(quantity))
+                rand_names_last = random.sample(surnames, k=int(quantity))
+                rand_names_last.sort()
+                for i in range(int(quantity)):
+                    first = rand_names_first_m[i]
+                    last = rand_names_last[i]
+                    employee_names.append(first + " " + last)
+            elif name_type == "b":
+                rand_names_first_f = random.sample(names_females, k=int(quantity))
+                rand_names_last = random.sample(surnames, k=int(quantity))
+                rand_names_last.sort()
+                for i in range(int(quantity)):
+                    first = rand_names_first_f[i]
+                    last = rand_names_last[i]
+                    employee_names.append(first + " " + last)
+            elif name_type == "c":
+                rand_names_first_f = random.sample(names_females, k=int(quantity))
+                rand_names_first_m = random.sample(names_males, k=int(quantity))
+                rand_names_last = random.sample(surnames, k=int(quantity))
+                rand_names_last.sort()
+                for i in range(int(quantity)):
+                    z = random.randint(0, 1)
+                    if z == 0:
+                        first = rand_names_first_f[i]
+                    else:
+                        first = rand_names_first_m[i]
+                    last = rand_names_last[i]
+                    employee_names.append(first + " " + last)
+            print("Now select some options")
+            option_1 = input("Will the employee have a salary? y/n: ")
+            try:
+                if option_1 == "y":
+                    for i in range(int(quantity)):
+                        employee_salary.append(random.choice(salaries))
+                elif option_1 == "n":
+                    pass
+                else:
+                    print("\"" + option_1 + "\" IS NOT A VALID INPUT")
+                option_2 = input("Will employee have a position? y/n: ")
+                if option_2 == "y":
+                    for i in range(int(quantity)):
+                        employee_position.append(random.choice(positions))
+                elif option_2 == "n":
+                    pass
+                else:
+                    print("\"" + option_2 + "\" IS NOT A VALID INPUT")
+                option_3 = input("Will employee have years worked? y/n: ")
+                if option_3 == "y":
+                    for i in range(int(quantity)):
+                        employee_years_worked.append(random.randint(1, 30))
+                elif option_3 == "n":
+                    pass
+                else:
+                    print("\"" + option_3 + "\" IS NOT A VALID INPUT")
+            except ValueError:
+                print("INVALID INPUT")
+            while True:
+                path = input("Enter file path to write data to. The only file extension supported in this version is "
+                             ".txt: ")
+                if ".txt" in path:
+                    break
+                else:
+                    print("\nFILE NAME DOES NOT HAVE A FILE EXTENSION")
+            for i in range(int(quantity)):
+                if employee_names:
+                    try:
+                        with open(path, "a+") as file:
+                            file.write(employee_names[i] + ", ")
+                    except PermissionError:
+                        print("CANNOT ACCESS FILE")
+                        break
+                    except ValueError:
+                        print("INVALID INPUT")
+                        break
+                    except FileNotFoundError:
+                        print("FILE PATH NOT FOUND")
+                        break
+                    except OSError:
+                        print("CANNOT SAVE FILE")
+                        break
+                else:
+                    pass
+                if employee_salary:
+                    try:
+                        with open(path, "a+") as file:
+                            file.write("Salary: " + str(employee_salary[i]) + ", ")
+                    except PermissionError:
+                        print("CANNOT ACCESS FILE")
+                        break
+                    except ValueError:
+                        print("INVALID INPUT")
+                        break
+                    except FileNotFoundError:
+                        print("FILE PATH NOT FOUND")
+                        break
+                    except OSError:
+                        print("CANNOT SAVE FILE")
+                        break
+                else:
+                    pass
+                if employee_position:
+                    try:
+                        with open(path, "a+") as file:
+                            file.write("Position: " + employee_position[i] + ", ")
+                    except PermissionError:
+                        print("CANNOT ACCESS FILE")
+                        break
+                    except ValueError:
+                        print("INVALID INPUT")
+                        break
+                    except FileNotFoundError:
+                        print("FILE PATH NOT FOUND")
+                        break
+                    except OSError:
+                        print("CANNOT SAVE FILE")
+                        break
+                else:
+                    pass
+                if employee_years_worked:
+                    try:
+                        with open(path, "a+") as file:
+                            file.write("Years Worked: " + str(employee_years_worked[i]) + ", ")
+                    except PermissionError:
+                        print("CANNOT ACCESS FILE")
+                        break
+                    except ValueError:
+                        print("INVALID INPUT")
+                        break
+                    except FileNotFoundError:
+                        print("FILE PATH NOT FOUND")
+                        break
+                    except OSError:
+                        print("CANNOT SAVE FILE")
+                        break
+                else:
+                    pass
+                try:
+                    with open(path, "a+") as file:
+                        file.write("\n")
+                except PermissionError:
+                    print("CANNOT ACCESS FILE")
+                    break
+                except ValueError:
+                    print("INVALID INPUT")
+                    break
+                except FileNotFoundError:
+                    print("FILE PATH NOT FOUND")
+                    break
+                except OSError:
+                    print("CANNOT SAVE FILE")
+                    break
+            print("DONE\n")
+        else:
+            print("\"" + command + "\" IS NOT A VALID INPUT")
+
+
+while True:
+    print("\nRandom data generator. Written by: Joshua Kitchen - 2019")
+    category = input("For a list of data categories type \"categories\"\nTo exit program, type \"quit\""
+                     "\nEnter category:")
+    if category == "categories":
+        show_categories()
+    elif category == "dates":
+        random_dates()
+    elif category == "names":
+        random_names()
+    elif category == "numbers":
+        random_numbers()
+    elif category == "dice rolls":
+        dice_rolls()
+    elif category == "coin tosses":
+        coin_tosses()
+    elif category == "random students":
+        random_students()
+    elif category == "random employees":
+        random_employees()
+    elif category == "quit":
+        print("Quitting...")
+        break
+    else:
+        print("\"" + category + "\" IS NOT A VALID INPUT")
